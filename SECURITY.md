@@ -92,3 +92,11 @@ If a leak is discovered:
   4. Only then declare it live
 - **If a service is found to have unprotected routes after going live, it is treated as a security incident.** Same severity as a credential leak.
 - **No exception for "just the UI" or "it's just internal."** The Mission Control kanban incident (2026-05-17) proved that internal-only services with unprotected UI pages leak sensitive team data to anyone who finds the URL.
+
+## 10. Shared Tooling — Make Tools Globally Available
+
+- **All tools must be deployed as shared services accessible by every agent**, not installed per-container.
+- Headless browsers, screenshot services, and other agent-facing tools should run as standalone containers or services on shared infrastructure (VPS1).
+- Rationale: Prevents duplication, ensures consistency, and means a bug fix or update benefits every agent at once.
+- The shared headless Chromium CDP service at `10.0.0.1:18801` is the reference implementation of this rule.
+- Any agent that needs a tool must use the shared service first. Per-container installs are acceptable only as a fallback when shared service is unavailable.
