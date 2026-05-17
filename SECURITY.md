@@ -101,3 +101,18 @@ If a leak is discovered:
 ---
 
 *This SOP takes precedence over all other SOPs. No task priority overrides security.*
+
+## 11. A2A GitHub Release Protocol — Every Update, Sanitized, No Exceptions
+
+Every time the team ships an A2A upgrade or improvement to the internal mesh:
+1. **Update the public GitHub repo** (`agentmesh-reference`) with sanitized documentation reflecting the change.
+2. **2-layer review is MANDATORY before any push:**
+   - Layer 1: **PEER reviews** every file for leaks — IPs, tokens, codenames, internal paths, any identifying detail.
+   - Layer 2: **Jarvis reviews** the same files again — fresh eyes, zero assumptions.
+   - Both must explicitly approve: "Sanitized and safe to publish."
+3. **"When in doubt, assume it's sensitive."** If either reviewer has even a slight uncertainty about a piece of content, it stays out. No debate.
+4. **Full pre-release scan** (per Section 2) on every file.
+5. **No single agent pushes alone.** Period.
+6. **The GitHub repo is a showcase, not a workspace.** What goes there is what the world sees — and the world includes competitors, adversaries, and bad actors.
+
+**Violation of this protocol is a Section 6 (zero tolerance) security incident.**
