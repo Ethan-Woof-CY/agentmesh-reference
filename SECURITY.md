@@ -7,6 +7,15 @@
 
 ---
 
+## 0. GITHUB IS PUBLIC — Treat It As Lost
+
+- **GitHub is a public square.** Anything pushed there is visible to the entire internet — competitors, adversaries, malicious actors.
+- **No internal operations, credentials, IPs, codenames, configs, or team data ever touches GitHub.**
+- The `agentmesh-reference` repo exists solely as a **sanitized public reference** — pre-release scanned, 2-agent reviewed, and containing zero team-identifying information.
+- **If it would not be safe as a press release, it does not belong on GitHub.**
+- This includes: issues, comments, pull requests, discussions, repo descriptions, wiki pages, and all branches — not just the main branch.
+- **Violation:** Any team member who pushes internal data to GitHub — even accidentally — triggers an immediate security incident.
+
 ## 1. CORE RULE
 
 **Nothing identifying this team or its infrastructure ever reaches the public internet.**
@@ -29,7 +38,7 @@ Every agent MUST run an automated scan before pushing ANY content to a public re
 ## 3. Review Protocol
 
 - **Every public push requires 2-agent review**: The authoring agent reviews for content. A second agent reviews for leaks.
-- **No single agent publishes alone.** 
+- **No single agent publishes alone.**
 - **Exception:** Time-critical security patches. Post-publish audit within 1 hour.
 
 ## 4. Public Communication
@@ -61,18 +70,6 @@ If a leak is discovered:
 - **Weekly** — Credential rotation check
 - **After any public push** — Immediate post-publish audit
 
----
-
-*This SOP takes precedence over all other SOPs. No task priority overrides security.*
-
-## 8. HTTPS Only — No Plain HTTP
-
-- **All internal services exposed for team access MUST use HTTPS.** No exceptions.
-- Self-signed certificates are acceptable for internal use. Plain HTTP is not.
-- Any service found serving over HTTP must be immediately taken down and re-deployed with HTTPS.
-- This applies to: Mission Control, dashboards, APIs, agent endpoints, and any other web-accessible service.
-- Rationale: Even on internal networks, credentials and session tokens transmitted over HTTP can be intercepted by any process on the same network segment.
-
 ## 8. HTTPS Only — No Plain HTTP
 
 - **All internal services exposed for team access MUST use HTTPS.** No exceptions.
@@ -96,7 +93,11 @@ If a leak is discovered:
 ## 10. Shared Tooling — Make Tools Globally Available
 
 - **All tools must be deployed as shared services accessible by every agent**, not installed per-container.
-- Headless browsers, screenshot services, and other agent-facing tools should run as standalone containers or services on shared infrastructure (VPS1).
+- Headless browsers, screenshot services, and other agent-facing tools should run as standalone containers or services on shared infrastructure (<server>).
 - Rationale: Prevents duplication, ensures consistency, and means a bug fix or update benefits every agent at once.
-- The shared headless Chromium CDP service at `10.0.0.1:18801` is the reference implementation of this rule.
+- The shared headless Chromium CDP service at `<internal-cdp>` is the reference implementation of this rule.
 - Any agent that needs a tool must use the shared service first. Per-container installs are acceptable only as a fallback when shared service is unavailable.
+
+---
+
+*This SOP takes precedence over all other SOPs. No task priority overrides security.*
