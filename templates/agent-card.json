@@ -1,0 +1,29 @@
+{
+  "protocolVersion": "1.0.0",
+  "version": "1.0.0",
+  "name": "$AGENT_NAME",
+  "description": "$AGENT_DESCRIPTION",
+  "url": "$A2A_ENDPOINT",
+  "skills": [
+    { "id": "chat", "name": "chat", "description": "Chat bridge", "tags": [] }
+  ],
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "securitySchemes": {
+    "bearer": { "type": "http", "scheme": "bearer" }
+  },
+  "security": [ { "bearer": [] } ],
+  "supportsAuthenticatedExtendedCard": false,
+  "defaultInputModes": ["text"],
+  "defaultOutputModes": ["text"],
+  "supportedInterfaces": [
+    { "protocolVersion": "1.0", "protocolBinding": "JSONRPC" }
+  ],
+  "additionalInterfaces": [
+    { "url": "$A2A_ENDPOINT", "transport": "JSONRPC" },
+    { "url": "$A2A_REST_ENDPOINT", "transport": "HTTP+JSON" }
+  ]
+}

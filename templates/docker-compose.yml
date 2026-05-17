@@ -1,0 +1,23 @@
+# Private A2A Agent Mesh — Docker Compose Template
+# Replace all $PLACEHOLDERS with your values
+
+services:
+  nats:
+    image: nats:latest
+    command: -js -m 8222
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    restart: unless-stopped
+
+  agent-template:
+    image: openclaw-official:latest
+    init: true
+    ports:
+      - "18802:18802"
+    volumes:
+      - ./agent-data:/data
+    environment:
+      - A2A_SIGNING_KEY=/data/.openclaw/agent-card-signing-key.pem
+      - NATS_SERVER=nats://nats:4222
+    restart: unless-stopped
