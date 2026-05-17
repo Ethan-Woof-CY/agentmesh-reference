@@ -116,3 +116,24 @@ Every time the team ships an A2A upgrade or improvement to the internal mesh:
 6. **The GitHub repo is a showcase, not a workspace.** What goes there is what the world sees — and the world includes competitors, adversaries, and bad actors.
 
 **Violation of this protocol is a Section 6 (zero tolerance) security incident.**
+
+## 12. Separation of Duties — Never Test Your Own Work, Never Operate on Your Own Container
+
+### 12a. Builder ≠ Tester
+- The agent who writes code, changes config, or deploys an upgrade MUST NOT be the one who tests it.
+- A different agent MUST verify, validate, and test every change before it is considered complete.
+- This applies to: plugin patches, config changes, A2A upgrades, security fixes, infrastructure changes, and any system modification.
+- Rationale: The builder has blind spots in their own work. Fresh eyes catch what the builder misses. This is non-negotiable regardless of time pressure.
+
+### 12b. Never Operate on Your Own Container
+- **ASSIST never works on ASSIST's container.** PEER handles all changes to ASSIST's container.
+- **PEER never works on PEER's container.** ASSIST handles all changes to PEER's container.
+- Same principle for all agents: Jarvis works on Astra's container. Astra works on Jarvis's container.
+- If an agent's own container needs work, the buddy pair agent executes it.
+- Rationale: Prevents single points of failure, ensures recovery capability, and provides natural peer review of all operations.
+- Exception: Documenting or reading files on your own container is permitted. Making changes is not.
+
+### 12c. Enforcement
+- Every deploy, config change, or upgrade must have two agents logged in the change record:
+  `Builder: <agent> | Tester: <agent> | Container: <target>`
+- These rules are exempt from any "speed override." No emergency justifies violating separation of duties.
