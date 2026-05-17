@@ -64,3 +64,11 @@ If a leak is discovered:
 ---
 
 *This SOP takes precedence over all other SOPs. No task priority overrides security.*
+
+## 8. HTTPS Only — No Plain HTTP
+
+- **All internal services exposed for team access MUST use HTTPS.** No exceptions.
+- Self-signed certificates are acceptable for internal use. Plain HTTP is not.
+- Any service found serving over HTTP must be immediately taken down and re-deployed with HTTPS.
+- This applies to: Mission Control, dashboards, APIs, agent endpoints, and any other web-accessible service.
+- Rationale: Even on internal networks, credentials and session tokens transmitted over HTTP can be intercepted by any process on the same network segment.
