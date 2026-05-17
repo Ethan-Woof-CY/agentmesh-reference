@@ -72,3 +72,23 @@ If a leak is discovered:
 - Any service found serving over HTTP must be immediately taken down and re-deployed with HTTPS.
 - This applies to: Mission Control, dashboards, APIs, agent endpoints, and any other web-accessible service.
 - Rationale: Even on internal networks, credentials and session tokens transmitted over HTTP can be intercepted by any process on the same network segment.
+
+## 8. HTTPS Only — No Plain HTTP
+
+- **All internal services exposed for team access MUST use HTTPS.** No exceptions.
+- Self-signed certificates are acceptable for internal use. Plain HTTP is not.
+- Any service found serving over HTTP must be immediately taken down and re-deployed with HTTPS.
+- This applies to: Mission Control, dashboards, APIs, agent endpoints, and any other web-accessible service.
+- Rationale: Even on internal networks, credentials and session tokens transmitted over HTTP can be intercepted by any process on the same network segment.
+
+## 9. Zero-Trust Deployment — Every Service Must Be Auth-Tested Before Going Live
+
+- **Before declaring any web service live, the deploying agent MUST test every route unauthenticated.** Not just API routes. The UI, the homepage, every path.
+- **Auth middleware must protect ALL routes.** Not just `/api/*`. Every route except the login/auth endpoints themselves.
+- **The test sequence before going live:**
+  1. Deploy the service
+  2. Hit every route with no credentials — expect 302 redirect or 401, never 200 with content
+  3. Hit every route with valid credentials — expect 200
+  4. Only then declare it live
+- **If a service is found to have unprotected routes after going live, it is treated as a security incident.** Same severity as a credential leak.
+- **No exception for "just the UI" or "it's just internal."** The Mission Control kanban incident (2026-05-17) proved that internal-only services with unprotected UI pages leak sensitive team data to anyone who finds the URL.
