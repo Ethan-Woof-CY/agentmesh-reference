@@ -1,6 +1,6 @@
 # Deploying NATS
 
-NATS serves as the internal message bus for agent-to-agent events.
+NATS serves as the internal message bus for agent-to-agent messaging.
 
 ## Quick Start
 
@@ -17,11 +17,19 @@ docker run -d --name nats \
 ## Verify
 
 ```bash
+# Check NATS version and connections
 curl http://localhost:8222/varz
-# Should show version, uptime, connection count
 ```
 
-## Subject Convention
+## Subject Conventions
+
+### A2A v3 NATS Protocol (Recommended)
+
+```
+a2a.msg.<agent-name>     # Direct message to a specific agent
+```
+
+### Legacy Convention (for custom bridges)
 
 ```
 agents.<agent-name>.<action>     # Direct agent messages
@@ -39,14 +47,24 @@ const nc = await connect({
   servers: process.env.NATS_SERVER || "nats://localhost:4222" 
 });
 
-// Publish
-await nc.publish("agents.myagent.heartbeat", sc.encode(JSON.stringify({
-  agent: "myagent", status: "online" 
+// Publish an ask message (A2A v3)
+await nc.publish("a2a.msg.target-agent", sc.encode(JSON.stringify({
+  jsonrpc: "2.0",
+  method: "message/send",
+  params: {
+    source: "my-agent",
+    target: "target-agent",
+    type: "ask",
+    payload: { text: "Hello!" },
+    msgId: "msg-" + Date.now(),
+    timestamp: new Date().toISOString()
+  }
 })));
 
-// Subscribe
-const sub = nc.subscribe("agents.myagent.>");
+// Subscribe to incoming messages
+const sub = nc.subscribe("a2a.msg.my-agent");
 for await (const msg of sub) {
-  console.log(`Received: ${sc.decode(msg.data)}`);
+  const data = JSON.parse(sc.decode(msg.data));
+  console.log("From " + data.params.source + ": " + data.params.payload.text);
 }
 ```
